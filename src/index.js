@@ -16,14 +16,15 @@ function createCountry(e) {
   listCountries.innerHTML = '';
   innerCountry.innerHTML = '';
 
-  const valueInput = e.target.value;
-
   function makeMarkup() {
-    fetchCountries(valueInput)
+    fetchCountries(e.target.value)
       .then(data => {
         data.forEach(el => {
           if (data.length > 1) {
-            listCountries.innerHTML += `<li class="item_countries">${el.name}</li>`;
+            let liEl = '';
+            liEl += `<li class="item_countries">${el.name}</li>`;
+            listCountries.insertAdjacentHTML('beforeend', liEl);
+
             innerCountry.innerHTML = '';
 
             listCountries.addEventListener('click', e => {
@@ -58,9 +59,13 @@ function createCountry(e) {
     input.value = '';
   }
 
-  fetchCountries(valueInput).then(data =>
-    data.length !== 0 && data.length > 10 ? notification() : makeMarkup(),
-  );
+  fetchCountries(e.target.value).then(data => {
+    if (data.length !== 0 && data.length > 10) {
+      notification();
+    } else {
+      makeMarkup();
+    }
+  });
 }
 
 input.addEventListener('input', debounce(createCountry, 500));

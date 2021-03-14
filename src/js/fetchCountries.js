@@ -5,5 +5,3 @@ function fetchCountries(countryName) {
 }
 
 export default fetchCountries;
-
-// ${countryName}
