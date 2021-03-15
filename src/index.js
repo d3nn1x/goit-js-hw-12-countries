@@ -1,5 +1,5 @@
 import './styles.css';
-const debounce = require('lodash.debounce');
+import debounce from 'lodash.debounce';
 
 import { notice, error } from '../node_modules/@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
@@ -16,8 +16,13 @@ function createCountry(e) {
   listCountries.innerHTML = '';
   innerCountry.innerHTML = '';
 
+  const value = e.target.value;
+  if (!value) {
+    return;
+  }
+
   function makeMarkup() {
-    fetchCountries(e.target.value)
+    fetchCountries(value)
       .then(data => {
         data.forEach(el => {
           if (data.length > 1) {
@@ -56,10 +61,9 @@ function createCountry(e) {
       text: 'Такой страны не существует',
       delay: 2000,
     });
-    input.value = '';
   }
 
-  fetchCountries(e.target.value).then(data => {
+  fetchCountries(value).then(data => {
     if (data.length !== 0 && data.length > 10) {
       notification();
     } else {
